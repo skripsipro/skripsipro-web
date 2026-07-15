@@ -35,7 +35,6 @@ export default function Testimonials() {
                 <div className="flex-1">
                   <h4 className="font-bold text-gray-900 text-lg">{testimonial.name}</h4>
                   <p className="text-blue-600 font-medium">{testimonial.major}</p>
-                  <p className="text-gray-500 text-sm">{testimonial.university}</p>
                   <div className="flex space-x-1 mt-2">
                     {renderStars(testimonial.rating)}
                   </div>
