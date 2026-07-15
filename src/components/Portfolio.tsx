@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ExternalLink, Code, Smartphone, Monitor, Database, ArrowRight } from 'lucide-react';
 import { projects } from '../data/portfolio';
 import type { Project } from '../data/portfolio';
 import PortfolioModal from './PortfolioModal';
 
 export default function Portfolio() {
-  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('semua');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
@@ -116,13 +114,13 @@ export default function Portfolio() {
 
         <div className="text-center mt-12">
           {filteredProjects.length >= 6 && (
-            <button
-              onClick={() => navigate('/portofolio')}
+            <a
+              href="/portofolio"
               className="bg-blue-700 text-white px-8 py-3 rounded-lg hover:bg-blue-800 transition-colors font-semibold inline-flex items-center space-x-2 group"
             >
               <span>Lihat Semua Portfolio</span>
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </button>
+            </a>
           )}
         </div>
       </div>

@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PortfolioPage from '../components/PortfolioPage';
+---
+
+<BaseLayout
+  title="Portofolio"
+  description="Lihat berbagai proyek aplikasi yang telah kami kembangkan untuk membantu mahasiswa menyelesaikan tugas akhir mereka"
+  url="https://skripsipro.com/portofolio"
+>
+  <PortfolioPage client:load />
+</BaseLayout>

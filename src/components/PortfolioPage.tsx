@@ -1,13 +1,10 @@
 import { useState } from 'react';
 import { ExternalLink, Code, Smartphone, Monitor, Database, ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { projects } from '../data/portfolio';
 import type { Project } from '../data/portfolio';
 import PortfolioModal from './PortfolioModal';
-import SEO from './SEO';
 
 export default function PortfolioPage() {
-  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('semua');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
@@ -33,22 +30,17 @@ export default function PortfolioPage() {
 
   return (
     <>
-      <SEO 
-        title="Portofolio"
-        description="Lihat berbagai proyek aplikasi yang telah kami kembangkan untuk membantu mahasiswa menyelesaikan tugas akhir mereka"
-        url="https://skripsipro.com/portofolio"
-      />
       <div className="min-h-screen bg-white">
         {/* Back Navigation */}
         <div className="bg-gray-50 border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <button
-              onClick={() => navigate('/')}
+            <a
+              href="/"
               className="flex items-center space-x-2 text-gray-600 hover:text-blue-700 transition-colors font-medium"
             >
               <ArrowLeft className="h-5 w-5" />
               <span>Kembali ke Beranda</span>
-            </button>
+            </a>
           </div>
         </div>
 
