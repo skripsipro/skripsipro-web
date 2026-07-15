@@ -1,11 +1,35 @@
-import React from 'react';
-import { Code, Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin, Youtube } from 'lucide-react';
+import { useState } from 'react';
+import { Code, Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin, Youtube, Loader2, CheckCircle } from 'lucide-react';
+import { SITE_CONFIG } from '../config/env';
 
 export default function Footer() {
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail) return;
+    setIsSubscribing(true);
+    
+    try {
+      // Simulasi subscribe (demo mode)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log('Newsletter subscribe:', newsletterEmail);
+      setIsSubscribed(true);
+      setNewsletterEmail('');
+      setTimeout(() => setIsSubscribed(false), 5000);
+    } catch {
+      // Silently fail for newsletter
+    } finally {
+      setIsSubscribing(false);
     }
   };
 
@@ -27,16 +51,16 @@ export default function Footer() {
   ];
 
   const socialLinks = [
-    { icon: Facebook, name: 'Facebook', url: '#', color: 'hover:text-blue-600' },
-    { icon: Twitter, name: 'Twitter', url: '#', color: 'hover:text-sky-500' },
-    { icon: Instagram, name: 'Instagram', url: '#', color: 'hover:text-pink-600' },
-    { icon: Linkedin, name: 'LinkedIn', url: '#', color: 'hover:text-blue-700' },
-    { icon: Youtube, name: 'YouTube', url: '#', color: 'hover:text-red-600' }
+    { icon: Facebook, name: 'Facebook', url: SITE_CONFIG.social.facebook, color: 'hover:text-blue-600' },
+    { icon: Twitter, name: 'Twitter', url: SITE_CONFIG.social.twitter, color: 'hover:text-sky-500' },
+    { icon: Instagram, name: 'Instagram', url: SITE_CONFIG.social.instagram, color: 'hover:text-pink-600' },
+    { icon: Linkedin, name: 'LinkedIn', url: SITE_CONFIG.social.linkedin, color: 'hover:text-blue-700' },
+    { icon: Youtube, name: 'YouTube', url: SITE_CONFIG.social.youtube, color: 'hover:text-red-600' }
   ];
 
   const contactInfo = [
-    { icon: Phone, text: '+62 812-3456-7890' },
-    { icon: Mail, text: 'info@skripsipro.com' },
+    { icon: Phone, text: SITE_CONFIG.whatsapp },
+    { icon: Mail, text: SITE_CONFIG.email },
     { icon: MapPin, text: 'Jakarta, Indonesia' }
   ];
 
@@ -100,16 +124,39 @@ export default function Footer() {
             </p>
             
             {/* Newsletter Signup */}
-            <div className="space-y-3">
-              <input
-                type="email"
-                placeholder="Email Anda"
-                className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
-              />
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors text-sm font-medium">
-                Berlangganan Update
-              </button>
-            </div>
+            <form onSubmit={handleNewsletterSubmit} className="space-y-3">
+              {isSubscribed ? (
+                <div className="flex items-center space-x-2 bg-green-900/50 text-green-300 px-4 py-2 rounded-lg text-sm">
+                  <CheckCircle className="h-4 w-4 flex-shrink-0" />
+                  <span>Berhasil berlangganan!</span>
+                </div>
+              ) : (
+                <>
+                  <input
+                    type="email"
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
+                    placeholder="Email Anda"
+                    required
+                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+                  />
+                  <button
+                    type="submit"
+                    disabled={isSubscribing}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors text-sm font-medium disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                  >
+                    {isSubscribing ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Memproses...</span>
+                      </>
+                    ) : (
+                      <span>Berlangganan Update</span>
+                    )}
+                  </button>
+                </>
+              )}
+            </form>
 
             {/* Social Media */}
             <div>

@@ -55,6 +55,7 @@ export default function About() {
               src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=800"
               alt="Tim developer bekerja"
               className="rounded-2xl shadow-xl"
+              loading="lazy"
             />
           </div>
         </div>

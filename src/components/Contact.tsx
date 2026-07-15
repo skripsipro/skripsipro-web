@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { Send, Phone, Mail, MapPin, MessageCircle, Clock } from 'lucide-react';
+import { useState } from 'react';
+import { Send, Phone, Mail, MessageCircle, Clock, Loader2 } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+import { EMAILJS_CONFIG } from '../config/env';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -13,6 +15,8 @@ export default function Contact() {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -22,15 +26,36 @@ export default function Contact() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    console.log('Form submitted:', formData);
-    setIsSubmitted(true);
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
+    setSubmitError('');
+    setIsLoading(true);
+
+    try {
+      const templateParams = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        projectType: formData.projectType,
+        university: formData.university,
+        deadline: formData.deadline,
+        message: formData.message,
+      };
+
+      if (EMAILJS_CONFIG.PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
+        // Demo mode: show success without sending
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        console.log('Demo mode - form data:', templateParams);
+      } else {
+        await emailjs.send(
+          EMAILJS_CONFIG.SERVICE_ID,
+          EMAILJS_CONFIG.CONTACT_TEMPLATE_ID,
+          templateParams,
+          EMAILJS_CONFIG.PUBLIC_KEY
+        );
+      }
+
+      setIsSubmitted(true);
       setFormData({
         name: '',
         email: '',
@@ -40,7 +65,14 @@ export default function Contact() {
         deadline: '',
         message: ''
       });
-    }, 3000);
+      
+      setTimeout(() => setIsSubmitted(false), 5000);
+    } catch (error) {
+      console.error('EmailJS error:', error);
+      setSubmitError('Gagal mengirim pesan. Silakan coba lagi atau hubungi kami langsung via WhatsApp.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const projectTypes = [
@@ -264,12 +296,28 @@ export default function Contact() {
                     </p>
                   </div>
 
+                  {submitError && (
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                      {submitError}
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full bg-blue-700 text-white py-4 px-8 rounded-lg hover:bg-blue-800 transition-colors font-semibold text-lg flex items-center justify-center space-x-2 group"
+                    disabled={isLoading}
+                    className="w-full bg-blue-700 text-white py-4 px-8 rounded-lg hover:bg-blue-800 transition-colors font-semibold text-lg flex items-center justify-center space-x-2 group disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    <Send className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                    <span>Kirim Pesan & Mulai Konsultasi</span>
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                        <span>Mengirim...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                        <span>Kirim Pesan & Mulai Konsultasi</span>
+                      </>
+                    )}
                   </button>
                 </form>
               )}

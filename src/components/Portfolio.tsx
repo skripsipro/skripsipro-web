@@ -1,71 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ExternalLink, Code, Smartphone, Monitor, Database } from 'lucide-react';
+import { projects } from '../data/portfolio';
+import type { Project } from '../data/portfolio';
+import PortfolioModal from './PortfolioModal';
 
 export default function Portfolio() {
   const [selectedCategory, setSelectedCategory] = useState('semua');
-
-  const projects = [
-    {
-      id: 1,
-      title: 'Sistem Informasi Perpustakaan',
-      category: 'web',
-      type: 'Web Application',
-      description: 'Sistem manajemen perpustakaan dengan fitur peminjaman buku, katalog online, dan laporan statistik.',
-      image: 'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=800',
-      technologies: ['React', 'Node.js', 'MySQL', 'Bootstrap'],
-      university: 'Universitas Indonesia'
-    },
-    {
-      id: 2,
-      title: 'Aplikasi E-Learning Mobile',
-      category: 'mobile',
-      type: 'Mobile Application',
-      description: 'Platform pembelajaran online untuk mahasiswa dengan fitur video course, quiz, dan sertifikat.',
-      image: 'https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=800',
-      technologies: ['React Native', 'Firebase', 'Redux', 'Expo'],
-      university: 'Institut Teknologi Bandung'
-    },
-    {
-      id: 3,
-      title: 'Sistem Inventory Gudang',
-      category: 'desktop',
-      type: 'Desktop Application',
-      description: 'Aplikasi desktop untuk manajemen stok barang dengan fitur barcode scanner dan laporan real-time.',
-      image: 'https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=800',
-      technologies: ['Electron', 'React', 'SQLite', 'Chart.js'],
-      university: 'Universitas Gadjah Mada'
-    },
-    {
-      id: 4,
-      title: 'Portal Berita Kampus',
-      category: 'web',
-      type: 'Web Application',
-      description: 'Website portal berita dengan sistem CMS, kategori artikel, dan fitur komentar.',
-      image: 'https://images.pexels.com/photos/518543/pexels-photo-518543.jpeg?auto=compress&cs=tinysrgb&w=800',
-      technologies: ['Laravel', 'MySQL', 'Bootstrap', 'CKEditor'],
-      university: 'Universitas Brawijaya'
-    },
-    {
-      id: 5,
-      title: 'Aplikasi Kasir Restoran',
-      category: 'mobile',
-      type: 'Mobile Application',
-      description: 'Aplikasi kasir untuk restoran dengan fitur menu management, order tracking, dan payment gateway.',
-      image: 'https://images.pexels.com/photos/1581384/pexels-photo-1581384.jpeg?auto=compress&cs=tinysrgb&w=800',
-      technologies: ['Flutter', 'Dart', 'Firebase', 'Stripe'],
-      university: 'Universitas Diponegoro'
-    },
-    {
-      id: 6,
-      title: 'Sistem Absensi Karyawan',
-      category: 'web',
-      type: 'Web System',
-      description: 'Sistem absensi online dengan fitur geolocation, laporan kehadiran, dan notifikasi otomatis.',
-      image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800',
-      technologies: ['Vue.js', 'Express.js', 'PostgreSQL', 'Socket.io'],
-      university: 'Universitas Airlangga'
-    }
-  ];
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const categories = [
     { id: 'semua', label: 'Semua Proyek', icon: Code },
@@ -162,6 +103,11 @@ export default function Portfolio() {
             );
           })}
         </div>
+
+        {/* Detail Modal */}
+        {selectedProject && (
+          <PortfolioModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+        )}
 
         <div className="text-center mt-12">
           <p className="text-gray-600 mb-6">Tertarik untuk membuat aplikasi serupa?</p>
