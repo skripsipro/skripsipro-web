@@ -118,8 +118,7 @@ export default function PortfolioPage() {
                         </div>
                       </div>
                       
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <span className="text-sm text-gray-500">{project.university}</span>
+                      <div className="flex justify-end pt-4 border-t border-gray-100">
                         <button 
                           onClick={() => setSelectedProject(project)}
                           className="flex items-center space-x-1 text-blue-700 hover:text-blue-800 font-medium"

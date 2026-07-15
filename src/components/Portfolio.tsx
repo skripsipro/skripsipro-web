@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { ExternalLink, Code, Smartphone, Monitor, Database } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ExternalLink, Code, Smartphone, Monitor, Database, ArrowRight } from 'lucide-react';
 import { projects } from '../data/portfolio';
 import type { Project } from '../data/portfolio';
 import PortfolioModal from './PortfolioModal';
 
 export default function Portfolio() {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('semua');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
@@ -15,8 +17,8 @@ export default function Portfolio() {
     { id: 'desktop', label: 'Desktop App', icon: Database }
   ];
 
-  const filteredProjects = selectedCategory === 'semua' 
-    ? projects 
+  const filteredProjects = selectedCategory === 'semua'
+    ? projects
     : projects.filter(project => project.category === selectedCategory);
 
   const getIcon = (category: string) => {
@@ -56,17 +58,18 @@ export default function Portfolio() {
           ))}
         </div>
 
-        {/* Projects Grid */}
+        {/* Projects Grid - Tampilkan maksimal 6 */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project) => {
+          {filteredProjects.slice(0, 6).map((project) => {
             const IconComponent = getIcon(project.category);
             return (
               <div key={project.id} className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden">
                 <div className="relative overflow-hidden">
-                  <img 
-                    src={project.image} 
+                  <img
+                    src={project.image}
                     alt={project.title}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
                   />
                   <div className="absolute top-4 left-4">
                     <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center space-x-2">
@@ -75,11 +78,11 @@ export default function Portfolio() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{project.title}</h3>
                   <p className="text-gray-600 mb-4 leading-relaxed">{project.description}</p>
-                  
+
                   <div className="mb-4">
                     <p className="text-sm font-medium text-blue-700 mb-2">Teknologi:</p>
                     <div className="flex flex-wrap gap-2">
@@ -90,10 +93,12 @@ export default function Portfolio() {
                       ))}
                     </div>
                   </div>
-                  
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <span className="text-sm text-gray-500">{project.university}</span>
-                    <button className="flex items-center space-x-1 text-blue-700 hover:text-blue-800 font-medium">
+
+                  <div className="flex justify-end pt-4 border-t border-gray-100">
+                    <button
+                      onClick={() => setSelectedProject(project)}
+                      className="flex items-center space-x-1 text-blue-700 hover:text-blue-800 font-medium"
+                    >
                       <span className="text-sm">Lihat Detail</span>
                       <ExternalLink className="h-4 w-4" />
                     </button>
@@ -110,13 +115,15 @@ export default function Portfolio() {
         )}
 
         <div className="text-center mt-12">
-          <p className="text-gray-600 mb-6">Tertarik untuk membuat aplikasi serupa?</p>
-          <button 
-            onClick={() => document.getElementById('kontak')?.scrollIntoView({ behavior: 'smooth' })}
-            className="bg-blue-700 text-white px-8 py-3 rounded-lg hover:bg-blue-800 transition-colors font-semibold"
-          >
-            Konsultasi Gratis
-          </button>
+          {filteredProjects.length >= 6 && (
+            <button
+              onClick={() => navigate('/portofolio')}
+              className="bg-blue-700 text-white px-8 py-3 rounded-lg hover:bg-blue-800 transition-colors font-semibold inline-flex items-center space-x-2 group"
+            >
+              <span>Lihat Semua Portfolio</span>
+              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+          )}
         </div>
       </div>
     </section>

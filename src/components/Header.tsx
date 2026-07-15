@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { Menu, X, Code, ChevronDown } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Menu, X, Code } from 'lucide-react';
 
 export default function Header() {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const scrollToSection = (sectionId: string) => {
@@ -66,7 +68,7 @@ export default function Header() {
               <button onClick={() => scrollToSection('layanan')} className="text-left text-gray-700 hover:text-blue-700 font-medium">
                 Layanan
               </button>
-              <button onClick={() => scrollToSection('portofolio')} className="text-left text-gray-700 hover:text-blue-700 font-medium">
+              <button onClick={() => { navigate('/portofolio'); setIsMenuOpen(false); }} className="text-left text-gray-700 hover:text-blue-700 font-medium">
                 Portofolio
               </button>
               <button onClick={() => scrollToSection('faq')} className="text-left text-gray-700 hover:text-blue-700 font-medium">

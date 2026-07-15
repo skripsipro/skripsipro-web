@@ -49,8 +49,7 @@ export default function PortfolioModal({ project, onClose }: PortfolioModalProps
 
         {/* Content */}
         <div className="p-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">{project.title}</h3>
-          <p className="text-blue-700 font-medium mb-4">{project.university}</p>
+          <h3 className="text-2xl font-bold text-gray-900 mb-4">{project.title}</h3>
           
           {project.detailDescription && (
             <p className="text-gray-600 leading-relaxed mb-6">{project.detailDescription}</p>
